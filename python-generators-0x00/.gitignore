@@ -1,0 +1,33 @@
+__pyscache__# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip_log.txt
+*.egg-info/
+dist/
+build/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# MySQL and sensitive files
+*.sql
+*.dump
+*.cnf
+*.ini
+
+# Large data files
+user_data.csv
+*.csv
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.swp
