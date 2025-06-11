@@ -1,3 +1,4 @@
+from rest_framework import permission
 from rest_framework.permissions import BasePermission
 
 class IsParticipantOfConversation(BasePermission):
