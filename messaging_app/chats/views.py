@@ -29,17 +29,27 @@ class ConversationViewSet(viewsets.ModelViewSet):
         conversation.participants.add(self.request.user)
 
 
-# A ViewSet for viewing and editing Message instances.
 class MessageViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows messages to be viewed or sent.
+    API endpoint that allows messages to be viewed or sent within a specific conversation.
     """
-    queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes are now handled globally by the settings.py file
 
-    # We override the 'create' method to set the sender automatically.
+    def get_queryset(self):
+        """
+        This view should return a list of all the messages for
+        the conversation as determined by the conversation_pk portion of the URL.
+        """
+        # Get the conversation_pk from the URL
+        conversation_pk = self.kwargs['conversation_pk']
+        return Message.objects.filter(conversation__pk=conversation_pk)
+
     def perform_create(self, serializer):
-        # When a user sends a message, we automatically set the 'sender'
-        # to be the currently logged-in user. They don't need to specify it.
-        serializer.save(sender=self.request.user)
+        """
+        Set the sender and the conversation automatically based on the context.
+        """
+        conversation_pk = self.kwargs['conversation_pk']
+        conversation = Conversation.objects.get(pk=conversation_pk)
+        # Set the sender to the logged-in user
+        serializer.save(sender=self.request.user, conversation=conversation)
