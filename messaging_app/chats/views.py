@@ -4,6 +4,7 @@ from rest_framework.response import Response # <-- Import Response
 from .models import Conversation, Message, User
 from .serializers import ConversationSerializer, MessageSerializer
 from .permissions import IsParticipantOfConversation
+from .filters import ConversationFilter, MessageFilter
 
 # --- New FilterSet ---
 # This is where we define our filters.
@@ -66,6 +67,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     serializer_class = MessageSerializer
      permission_classes = [permissions.IsAuthenticated]
+    filterset_class = MessageFilter
 
     def get_queryset(self):
         """
