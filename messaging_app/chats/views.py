@@ -3,6 +3,7 @@ from rest_framework.decorators import action # <-- Import action
 from rest_framework.response import Response # <-- Import Response
 from .models import Conversation, Message, User
 from .serializers import ConversationSerializer, MessageSerializer
+from .permissions import IsParticipantOfConversation
 
 # --- New FilterSet ---
 # This is where we define our filters.
@@ -26,6 +27,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     serializer_class = ConversationSerializer
     # The new filter class is added here.
     filterset_class = ConversationFilter
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def get_queryset(self):
         """
@@ -56,11 +58,14 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
 
 
+
+
 class MessageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows messages to be viewed or sent within a specific conversation.
     """
     serializer_class = MessageSerializer
+     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """
