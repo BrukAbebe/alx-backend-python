@@ -3,9 +3,9 @@ from .models import Message, Notification, MessageHistory
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ['sender', 'receiver', 'content', 'timestamp', 'edited', 'read']
-    list_filter = ['timestamp', 'edited', 'read']
-    search_fields = ['content', 'sender__username', 'receiver__username']
+    list_display = ['sender', 'receiver', 'content', 'timestamp', 'edited', 'edited_by']
+    list_filter = ['timestamp', 'edited']
+    search_fields = ['content', 'sender__username', 'receiver__username', 'edited_by__username']
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
