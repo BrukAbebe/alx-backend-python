@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message History</title>
+</head>
+<body>
+    <h1>Message History</h1>
+    <ul>
+    {% for history in message.history.all %}
+        <li>{{ history.old_content }} (Edited at {{ history.edited_at }})</li>
+    {% empty %}
+        <li>No edit history</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'conversation' message.receiver.id %}">Back to Conversation</a>
+</body>
+</html>
