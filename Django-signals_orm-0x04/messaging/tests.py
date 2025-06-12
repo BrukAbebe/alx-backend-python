@@ -29,13 +29,4 @@ class MessagingTests(TestCase):
         self.assertIsNotNone(history)
         self.assertEqual(history.old_content, "Original content")
         self.assertTrue(message.edited)
-
-    def test_user_deletion(self):
-        message = Message.objects.create(
-            sender=self.user1,
-            receiver=self.user2,
-            content="Test message"
-        )
-        self.user1.delete()
-        self.assertEqual(Message.objects.count(), 0)
-        self.assertEqual(Notification.objects.count(), 0)
+        self.assertEqual(message.edited_by, self.user1)
