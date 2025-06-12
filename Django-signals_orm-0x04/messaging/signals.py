@@ -17,7 +17,7 @@ def log_message_edit(sender, instance, **kwargs):
         old_message = Message.objects.get(id=instance.id)
         if old_message.content != instance.content:
             instance.edited = True
-            instance.edited_by = instance.sender 
+            instance.edited_by = instance.sender
             MessageHistory.objects.create(
                 message=instance,
                 old_content=old_message.content
@@ -25,8 +25,6 @@ def log_message_edit(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=User)
 def delete_user_data(sender, instance, **kwargs):
-    # Delete messages where user is sender or receiver
-    instance.sent_messages.all().delete()
-    instance.received_messages.all().delete()
-    # Delete notifications
-    instance.notifications.all().delete()
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+    Notification.objects.filter(user=instance).delete()
