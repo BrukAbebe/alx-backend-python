@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Manager
+
+class UnreadMessagesManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(read=False)
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
@@ -10,16 +13,14 @@ class Message(models.Model):
     edited = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
     parent_message = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='replies')
+    objects = models.Manager()  # Default manager
+    unread = UnreadMessagesManager()  # Custom manager
 
     class Meta:
         ordering = ['timestamp']
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver} at {self.timestamp}"
-
-class UnreadMessagesManager(Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(read=False)
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
