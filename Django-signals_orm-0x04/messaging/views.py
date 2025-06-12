@@ -30,7 +30,7 @@ def conversation_view(request, user_id):
 
 @login_required
 def unread_messages(request):
-    unread_messages = Message.unread.filter(receiver=request.user).only(
+    unread_messages = Message.unread.unread_for_user(request.user).only(
         'id', 'content', 'timestamp', 'sender__username'
     )
     context = {'unread_messages': unread_messages}
