@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch, Q
+from django.views.decorators.cache import cache_page
 from .models import Message
 from django.contrib.auth.models import User
 
@@ -12,6 +13,7 @@ def delete_user(request):
     return render(request, 'messaging/delete_account.html')
 
 @login_required
+@cache_page(60)
 def conversation_view(request, user_id):
     other_user = User.objects.get(id=user_id)
     messages = Message.objects.filter(
