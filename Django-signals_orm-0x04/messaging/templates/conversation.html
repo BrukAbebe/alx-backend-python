@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversation</title>
+</head>
+<body>
+    <h1>Conversation with {{ other_user.username }}</h1>
+    {% for message in messages %}
+        <div style="margin-left: {% if message.parent_message %}20px{% endif %}">
+            <p>{{ message.sender.username }}: {{ message.content }} ({{ message.timestamp }})</p>
+            {% for reply in message.replies.all %}
+                <div style="margin-left: 20px">
+                    <p>{{ reply.sender.username }}: {{ reply.content }} ({{ reply.timestamp }})</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>
